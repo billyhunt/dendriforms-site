@@ -13,11 +13,14 @@ an agent with no other context.
 ## Current state (2026-11-21)
 
 - Domain: `dendriforms.ai`, registered at DreamHost.
-- The old site ran on AWS Amplify. Its source repo could not be found.
-- DNS has no `A`, `ALIAS` or `CNAME` records for `@` or `www`, so the old site
-  is already unreachable. `MX` (Google) and `TXT` records remain.
+- The old site ran on AWS Amplify. Its source repo could not be found. Before
+  this change, DNS had no `A`, `ALIAS` or `CNAME` records for `@` or `www`, so
+  the old site was already unreachable. `MX` (Google) and `TXT` records remain.
 - The old site used Web3Forms for its contact form.
-- No GitHub repo for this site exists yet.
+- Repo: <https://github.com/billyhunt/dendriforms-site>. GitHub Pages serves
+  `main` from the root folder (steps 2 and 3 are done).
+- The GitHub Pages `A` and `CNAME` records were added at DreamHost through the
+  DreamHost API (step 4 is done).
 
 ## Target
 
@@ -110,7 +113,15 @@ problem.
 - The look is a quiet relative of the Alethia design system
   (<https://github.com/billyhunt/design-systems>, `systems/alethia`).
 - Colours: paper `#f2f0eb`, ink `#111111`, muted `#5f5c55`, hot `#ff3b00`.
-- The hot colour appears four times only: the square after the wordmark, the
+- The logo is a small tree of straight lines: a trunk, two right-angle
+  branches and three squares. It sits before the wordmark and is also the
+  favicon. The logo never changes.
+- Larger trees can grow. Where there is room (the back of the business card,
+  for example), a tree can have more branches. Every tree follows four rules:
+  straight lines only, right-angle branches, a square at the end of each
+  branch, and one orange square at the top.
+- The underline on "works." covers the word only, not the full stop.
+- The hot colour appears four times only: the top square of the tree mark, the
   underline on "works.", and the two buttons. Keep it rare.
 - Type: Archivo 600 for headlines in sentence case, Archivo 400 for text,
   DM Mono capitals for small labels, Archivo Black for the wordmark only.
