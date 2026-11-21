@@ -20,7 +20,7 @@ an agent with no other context.
 - Repo: <https://github.com/billyhunt/dendriforms-site>. GitHub Pages serves
   `main` from the root folder (steps 2 and 3 are done).
 - The GitHub Pages `A` and `CNAME` records were added at DreamHost through the
-  DreamHost API (step 4 is done).
+  DreamHost API, and HTTPS is enforced (steps 4 and 5 are done).
 
 ## Target
 
