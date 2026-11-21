@@ -7,8 +7,8 @@ an agent with no other context.
 
 - A one-page static site for Dendriforms. It is a placeholder site.
 - All files are in this folder. There is no build step.
-- The page works as it is, with one exception: the contact form has no access
-  key yet (step 1).
+- The page works as it is. The contact form's Web3Forms access key is in
+  `index.html` (step 1 is done).
 
 ## Current state (2026-11-21)
 
@@ -29,11 +29,10 @@ It is free and needs no AWS account.
 
 ## Steps
 
-### 1. Add the Web3Forms access key
+### 1. Add the Web3Forms access key (done)
 
-1. Open `index.html`.
-2. Find `YOUR_WEB3FORMS_ACCESS_KEY`. It appears one time.
-3. Replace it with the real key.
+The key is the `access_key` field in the form in `index.html`. To change it,
+replace that value.
 
 If the old key is lost, get a new one at <https://web3forms.com>. Enter the
 email address that must receive the messages. The key arrives by email. The
