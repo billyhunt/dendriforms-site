@@ -22,6 +22,19 @@ an agent with no other context.
 - The GitHub Pages `A` and `CNAME` records were added at DreamHost through the
   DreamHost API, and HTTPS is enforced (steps 4 and 5 are done).
 
+## Next: AWS (planned 2026-11-26)
+
+The site is moving to the Dendriforms AWS account, next to the Dendriforms Quick
+Launch prototypes, through <https://github.com/Dendriforms/quicklaunch>
+(`deployments/dendriforms-ai`). Its README, section "The company site", has the
+cutover steps. Until then GitHub Pages keeps serving the site.
+
+- `.github/workflows/deploy.yml` publishes `main` to AWS on every push. It does
+  nothing until the repo variables `AWS_ROLE_ARN`, `SITE_BUCKET` and
+  `DISTRIBUTION_ID` are set.
+- After the cutover, rewrite this file for AWS, turn off GitHub Pages and delete
+  `CNAME` and `.nojekyll`.
+
 ## Target
 
 GitHub Pages, from a new public repo, with the custom domain `dendriforms.ai`.
