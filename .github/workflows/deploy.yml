@@ -1,7 +1,7 @@
 # Publishes main to the Dendriforms AWS account (Dendriforms Quick Launch,
 # deployments/dendriforms-ai). Signs in to AWS with GitHub's OpenID Connect token;
-# no AWS keys are stored here. Does nothing until the repo variables
-# AWS_ROLE_ARN, SITE_BUCKET and DISTRIBUTION_ID are set.
+# no AWS keys are stored here. Needs the repo variables AWS_ROLE_ARN, SITE_BUCKET
+# and DISTRIBUTION_ID.
 name: Deploy to AWS
 
 on:
@@ -32,8 +32,7 @@ jobs:
       - name: Upload the site
         run: |
           aws s3 sync . "s3://${{ vars.SITE_BUCKET }}" --delete \
-            --exclude ".git/*" --exclude ".github/*" --exclude "*.md" \
-            --exclude "CNAME" --exclude ".nojekyll"
+            --exclude ".git/*" --exclude ".github/*" --exclude "*.md"
 
       - name: Clear the CloudFront cache
         run: |

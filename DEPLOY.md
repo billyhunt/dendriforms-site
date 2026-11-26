@@ -1,114 +1,61 @@
 # Deploy dendriforms.ai
 
-This file lists every step to put the site live. It is written for a person or
-an agent with no other context.
+This file explains how the site is published. It is written for a person or an
+agent with no other context.
 
 ## What this is
 
-- A one-page static site for Dendriforms. It is a placeholder site.
-- All files are in this folder. There is no build step.
-- The page works as it is. The contact form's Web3Forms access key is in
-  `index.html` (step 1 is done).
+- A one-page static site for Dendriforms. All files are in this folder. There
+  is no build step.
+- The contact form posts to Web3Forms. Its access key is the `access_key` field
+  in `index.html`.
 
-## Current state (2026-11-21)
+## How it is published (since 2026-11-26)
 
-- Domain: `dendriforms.ai`, registered at DreamHost.
-- The old site ran on AWS Amplify. Its source repo could not be found. Before
-  this change, DNS had no `A`, `ALIAS` or `CNAME` records for `@` or `www`, so
-  the old site was already unreachable. `MX` (Google) and `TXT` records remain.
-- The old site used Web3Forms for its contact form.
-- Repo: <https://github.com/billyhunt/dendriforms-site>. GitHub Pages serves
-  `main` from the root folder (steps 2 and 3 are done).
-- The GitHub Pages `A` and `CNAME` records were added at DreamHost through the
-  DreamHost API, and HTTPS is enforced (steps 4 and 5 are done).
+- Pushing to `main` publishes the site. `.github/workflows/deploy.yml` signs in
+  to the Dendriforms AWS account (372620611633) with GitHub's OpenID Connect
+  token, copies the files to the S3 bucket and clears the CloudFront cache. No
+  AWS keys are stored in GitHub.
+- The workflow reads three repo variables: `AWS_ROLE_ARN`, `SITE_BUCKET` and
+  `DISTRIBUTION_ID`. Their values come from `ql output dendriforms-ai`.
+- It skips `.git`, `.github` and Markdown files.
+- The hosting itself (bucket, CloudFront, certificate, DNS records, publish
+  role) is defined in <https://github.com/Dendriforms/quicklaunch>, in
+  `deployments/dendriforms-ai`. Change it there, never in the AWS console.
+- `www.dendriforms.ai` redirects to `dendriforms.ai`.
 
-## Next: AWS (planned 2026-11-26)
+## Domain and DNS
 
-The site is moving to the Dendriforms AWS account, next to the Dendriforms Quick
-Launch prototypes, through <https://github.com/Dendriforms/quicklaunch>
-(`deployments/dendriforms-ai`). Its README, section "The company site", has the
-cutover steps. Until then GitHub Pages keeps serving the site.
+- `dendriforms.ai` is registered at DreamHost. Its name servers point at the
+  Route 53 zone in the Dendriforms AWS account.
+- Every record lives in Route 53 and is managed by Terraform in the quicklaunch
+  repo (`terraform/bootstrap`): Google mail (`MX`), the Google site verification
+  (`TXT`), the email-sending records for `noreply@dendriforms.ai`, and the site
+  records. Do not add records at DreamHost; DreamHost no longer answers for the
+  domain.
 
-- `.github/workflows/deploy.yml` publishes `main` to AWS on every push. It does
-  nothing until the repo variables `AWS_ROLE_ARN`, `SITE_BUCKET` and
-  `DISTRIBUTION_ID` are set.
-- After the cutover, rewrite this file for AWS, turn off GitHub Pages and delete
-  `CNAME` and `.nojekyll`.
+## History
 
-## Target
+- Until 2026-11-21 the old site ran on AWS Amplify with no reachable source.
+- 2026-11-21 to 2026-11-26: GitHub Pages served this repo.
+- 2026-11-26: moved to the Dendriforms AWS account, and GitHub Pages was turned
+  off.
 
-GitHub Pages, from a new public repo, with the custom domain `dendriforms.ai`.
-It is free and needs no AWS account.
+## The access key
 
-## Steps
-
-### 1. Add the Web3Forms access key (done)
-
-The key is the `access_key` field in the form in `index.html`. To change it,
-replace that value.
-
-If the old key is lost, get a new one at <https://web3forms.com>. Enter the
-email address that must receive the messages. The key arrives by email. The
-key is safe to publish: it can only send mail to that address.
+If the Web3Forms key is lost, get a new one at <https://web3forms.com>. Enter the
+email address that must receive the messages. The key arrives by email. The key
+is safe to publish: it can only send mail to that address.
 
 Do not put an email address on the page. The owner does not want one there.
 
-### 2. Create the repo and push
-
-1. Create a public repo, for example `billyhunt/dendriforms-site`. Leave it
-   empty.
-2. Put all files from this folder in the repo root. Keep `CNAME` and
-   `.nojekyll`.
-3. Commit and push to `main`.
-
-Free GitHub Pages needs a public repo.
-
-### 3. Turn on GitHub Pages
-
-1. In the repo: Settings, then Pages.
-2. Source: "Deploy from a branch". Branch: `main`, folder `/ (root)`.
-3. Custom domain: `dendriforms.ai`. The `CNAME` file sets this already. Confirm
-   that the field shows it.
-
-### 4. Change DNS at DreamHost
-
-Use the records that GitHub shows in its Pages documentation. Confirm them
-there before you change anything:
-<https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site>
-
-At the time of writing, the records are:
-
-| Type | Name | Value |
-|---|---|---|
-| A | `@` | `185.199.108.153` |
-| A | `@` | `185.199.109.153` |
-| A | `@` | `185.199.110.153` |
-| A | `@` | `185.199.111.153` |
-| CNAME | `www` | `billyhunt.github.io` |
-
-If any old records for `@` or `www` that point at AWS Amplify have come back,
-remove them. Do not remove mail (`MX`) or `TXT` records.
-
-DNS changes can take up to a day. They are usually faster.
-
-### 5. Turn on HTTPS
-
-1. Go back to Settings, then Pages.
-2. Wait until the DNS check passes.
-3. Select "Enforce HTTPS".
-
-### 6. Test
+## Test after a change
 
 1. Open <https://dendriforms.ai> and <https://www.dendriforms.ai>. Both must
-   show the new site.
+   show the site.
 2. Open the site on a phone.
 3. Send one test message through the form. Confirm that it arrives by email.
 4. Select "Start a project" at the top. It must jump to the form.
-
-### 7. Remove the old site
-
-When the new site is live and the form works, delete the old Amplify app in the
-AWS console. This stops the AWS charges for it.
 
 ## If spam arrives
 

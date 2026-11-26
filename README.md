@@ -7,9 +7,8 @@ One static page. No build step, no dependencies, no outside scripts.
 | `index.html` | The whole site. Styles are inline. |
 | `fonts/` | Archivo, Archivo Black and DM Mono (Latin subset), with their SIL Open Font License texts. |
 | `favicon.svg` | The icon. |
-| `CNAME` | The custom domain for GitHub Pages: `dendriforms.ai`. |
-| `.nojekyll` | Tells GitHub Pages to serve the files as they are. |
-| `DEPLOY.md` | Every step to put the site live. Start there. |
+| `.github/workflows/deploy.yml` | Publishes `main` to AWS on every push. |
+| `DEPLOY.md` | How the site is published and tested. Start there. |
 
 View it locally:
 
